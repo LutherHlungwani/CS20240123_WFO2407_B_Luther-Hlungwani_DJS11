@@ -1,22 +1,30 @@
-import React, {createContext, useState, useContext} from "react";
+import React, { createContext, useState, useMemo, useContext } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+const ThemeToggleContext = createContext();
 
-const ThemeContext = createContext();
+export const useThemeToggle = () => useContext(ThemeToggleContext);
 
-export const useTheme = () => {
-    return useContext(ThemeContext);
+const ThemeContextProvider = ({ children }) => {
+  const [darkMode, setDarkMode] = useState(false);
+
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: darkMode ? "dark" : "light",
+        },
+      }),
+    [darkMode]
+  );
+
+  const toggleTheme = () => setDarkMode((prev) => !prev);
+
+  return (
+    <ThemeToggleContext.Provider value={{ darkMode, toggleTheme }}>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    </ThemeToggleContext.Provider>
+  );
 };
 
-export const ThemeProvider = ({children}) => {
-    const [isDarkMode, setIsDarkMode] = useState(false);
-
-    const toggleTheme = () => {
-        setIsDarkMode((prevMode) => !prevMode);
-    };
-
-    return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-    );
-};
+export default ThemeContextProvider;

@@ -1,8 +1,9 @@
-header{
-  display: inline;
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
 }
 
-nav{
-
-  display: inline;
+h1 {
+  padding: 16px;
 }
+

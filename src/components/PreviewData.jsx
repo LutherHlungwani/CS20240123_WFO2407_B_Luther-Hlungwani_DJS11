@@ -1,14 +1,7 @@
 import {useState, useEffect} from 'react';
 import PropTypes from "prop-types";
-import {
-    Card,
-    CardContent,
-    CardMedia,
-    Typography,
-    Grid,
-    Chip,
-    
-} from "@mui/material";
+import { Grid, Card, CardContent, Typography, Avatar, CardActionArea } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 
 //Genre ID-to-Title mapping
@@ -48,16 +41,28 @@ const PodcastList = () => {
 
     if (loading) return <Typography>Loading podcasts...</Typography>;
 
-    return(
-        <Grid container spacing ={3} style={{ padding: 20 }}>
-            {podcasts.map((podcast) => (
-                <Grid item xs={12} sm={6} md={4} key={podcast.id}>
-                    <PodcastCard {...podcast} />
-                </Grid>
-            ))}
+    return (
+        <Grid container spacing={3}>
+          {shows.map((show) => (
+            <Grid item xs={12} sm={6} md={4} key={show.id}>
+              <Link to={`/shows/${show.id}`} style={{ textDecoration: 'none' }}>
+                <Card sx={{ height: '100%', boxShadow: 3 }}>
+                  <CardActionArea>
+                    <Avatar src={show.image} sx={{ width: 150, height: 150, margin: '0 auto' }} />
+                    <CardContent>
+                      <Typography variant="h6">{show.title}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {show.description}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Link>
+            </Grid>
+          ))}
         </Grid>
-    );
-}
+      );
+};
 
 const PodcastCard = ({ title, description, seasons, image, genreIds, updated}) => (
 

@@ -1,48 +1,75 @@
-import React, {useState} from "react";
-import { Drawer, List, ListItem, IconButton, Switch, Divider, ListItemText } from "@mui/material";
-import { Link } from "react-router-dom";
-import MenuIcon from "@mui/material/Menu";
-import { useTheme } from "./ThemeContext";
+import React, { useState } from "react";
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  IconButton,
+  Switch,
+  Box,
+} from "@mui/material";
+import { Menu as MenuIcon, Home, LibraryMusic, Settings } from "@mui/icons-material";
+import { useThemeToggle } from "./ThemeContext";
 
 const Sidebar = () => {
-    const [open, setOpen] = useState(false);
-    const {isDarkMode, toggleTheme} = useTheme();
+  const { darkMode, toggleTheme } = useThemeToggle();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-    const toggleDrawer = () => {
-        setOpen(!open);
-    };
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
-    return(
-        <div>
-            {/*Hamburger Menu Button */}
-            <IconButton onClick={toggleDrawer}>
-                <MenuIcon />
-            </IconButton>
+  const drawerWidth = 240;
 
-            {/* Sidebar Drawer */}
-            <Drawer anchor="left" open={open} onClose={toggleDrawer}>
-                <div style={{ width: 250, padding: 20}}>
-                    <List>
-                        <ListItem button component={Link} to='/'>
-                            <ListItemText primary='Home' />
-                        </ListItem>
+  const menuItems = [
+    { text: "Home", icon: <Home /> },
+    { text: "Library", icon: <LibraryMusic /> },
+    { text: "Settings", icon: <Settings /> },
+  ];
 
-                        <Divider />
+  const drawerContent = (
+    <Box sx={{ width: drawerWidth }}>
+      <List>
+        {menuItems.map((item, index) => (
+          <ListItem button key={index}>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.text} />
+          </ListItem>
+        ))}
+        <ListItem>
+          <ListItemText primary="Dark Mode" />
+          <Switch checked={darkMode} onChange={toggleTheme} />
+        </ListItem>
+      </List>
+    </Box>
+  );
 
-                        {/* Light/Dark Mode Toggle */}
-                        <ListItem>
-                            <ListItemText primary='Dark Mode' />
-                            <Switch
-                                checked={isDarkMode}
-                                onChange={toggleTheme}
-                                inputProps={{'aria-label': 'Toggle dark mode'}}
-                            />
-                        </ListItem>
-                    </List>
-                </div>
-            </Drawer>
-        </div>
+  return (
+    <Drawer
+    variant="permanent"
+    sx={{
+      width: drawerWidth,
+      flexShrink: 0,
+      "& .MuiDrawer-paper": {
+        width: drawerWidth,
+        boxSizing: "border-box",
+        mt: { xs: "56px", sm: "64px" }, // Add margin to align below navbar
+      },
+    }}
+  >
+    <Box sx={{ overflow: "auto" }}>
+      <List>
+        {menuItems.map((item, index) => (
+          <ListItem button key={index}>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.text} />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  </Drawer>
     );
-};
+}
 
 export default Sidebar;
