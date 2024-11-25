@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
-import PropTypes from "prop-types";
-import { Grid, Card, CardContent, Typography, Avatar, CardActionArea } from '@mui/material';
+
+import { Grid, Box, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 
@@ -26,8 +26,8 @@ const PodcastList = () => {
         const fetchPodcasts = async () => {
 
             try {
-                const response = await fetch("https://podcast-api.netlify.app"); //URL containing data
-                const result = await response.json();
+                const preview = await fetch("https://podcast-api.netlify.app"); //URL containing data
+                const result = await preview.json();
                 setPodcasts(result);
                 setLoading(false);
             } catch(error) {
@@ -39,89 +39,34 @@ const PodcastList = () => {
         fetchPodcasts();
     }, []);
 
-    if (loading) return <Typography>Loading podcasts...</Typography>;
+    if (loading) {
 
-    return (
-        <Grid container spacing={3}>
-          {shows.map((show) => (
-            <Grid item xs={12} sm={6} md={4} key={show.id}>
-              <Link to={`/shows/${show.id}`} style={{ textDecoration: 'none' }}>
-                <Card sx={{ height: '100%', boxShadow: 3 }}>
-                  <CardActionArea>
-                    <Avatar src={show.image} sx={{ width: 150, height: 150, margin: '0 auto' }} />
-                    <CardContent>
-                      <Typography variant="h6">{show.title}</Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {show.description}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Link>
-            </Grid>
-          ))}
-        </Grid>
+      return (
+        <Box display="flex" justifyContent="Center" mt={4}>
+          <CircularProgress />
+        </Box>
       );
+    };
+  
+
+  return(
+    <Grid container spacing={3} justifyContent="center" mt={3}>
+    {data.map((item) => (
+      <Grid item key={item.id}>
+        <CardComponent
+          id={item.id}
+          title={item.title}
+          description={item.description}
+          seasons={item.seasons}
+          image={item.image}
+          genreIds={item.genreIds}
+          updated={item.updated}
+        />
+      </Grid>
+    ))}
+  </Grid>
+  );
 };
 
-const PodcastCard = ({ title, description, seasons, image, genreIds, updated}) => (
 
-    
-
-
-    <Card>
-        <CardMedia 
-        component="img"
-        height= "200"
-        image= {image}
-        alt={`Cover of ${title}`}
-        />
-        <CardContent>
-            <Typography gutterBottom variant ="h6">
-                {title}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    display: '-webkit-box',
-                    WebkitBoxOrient: 'vertical',
-                    WebkitLineClamp: 3, // Truncate to 3 lines
-                    height: 'auto',
-                    marginTop: '10px',
-                  }}>
-                {description}
-            </Typography>
-            <Typography variant="body2" color="text.seccondary"> 
-                Seasons: {seasons}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-                Updated: {new Date(updated).toLocaleDateString()}
-            </Typography>
-
-            <div style={{ marginTop: 10 }}>
-                {genreIds.map((genreId) => (
-                    <Chip
-                         key={genreId}
-                         label={GENRE_MAP[genreId] || "Unknown Genre"}
-                         size="small"
-                         style={{ marginRight: 5 }}
-                      />
-                    ))}
-            </div>
-        </CardContent>
-    </Card>
-);
-
-PodcastCard.defaultProps = { genreIds: [], };
-
-PodcastCard.propTypes = {
-    genreIds: PropTypes.array.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    seasons: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    genreIds: PropTypes.arrayOf(PropTypes.number).isRequired,
-    updated: PropTypes.string.isRequired,
-  };
-  
-  export default PodcastList;
+export default PodcastList;
