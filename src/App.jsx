@@ -9,27 +9,11 @@ function App() {
 
   return (
     <>
-    <Box sx={{display: "flex"}}>
-    <Router>
-        <Navbar />
-        
-        <Sidebar />
-        <div style={{ marginTop: 70, padding: 20}}>
-        <Routes>
-         <Route path='/' element={<Home/>} />
-         {/*  <Route path="/" element={<PodcastList />} /> */}
-         {/*<Route path="/podcasts/:id" element={<PodcastDetail />} /> */}
-
-
-        </Routes>
-        </div>
-        
-      </Router>
+    
         
         
       
-    </Box>    
-
+    
     
     
     

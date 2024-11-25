@@ -1,13 +1,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import ThemeContextProvider from './components/ThemeContext.jsx';
-import './index.css';
-import App from './App.jsx';
+import './styles/index.css';
+import AppRouter from './Router';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <ThemeContextProvider>
-    <App />
-    </ThemeContextProvider>
-    </StrictMode>,
-);
+
+ReactDom.createRoot(document.getElementById('root')).render(<AppRouter />);
+
