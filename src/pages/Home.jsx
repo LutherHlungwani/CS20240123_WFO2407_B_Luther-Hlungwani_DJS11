@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import PodcastList from "../components/PreviewData";
+import { fetchShows} from '../utils/api'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const Home = () => {
@@ -8,12 +8,18 @@ const Home = () => {
 
    useEffect(() => {
     const getShows = async () => {
-        const data = await fetchShows();
-        setShows(data.sort((a, b) => a.title.localeComapare(b.title)));
-        setShows(false);
+        try {
+            const data = await fetchShows();
+
+            setShows(data.sort((a, b) => a.title.localeCompare(b.title)));
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     };
     getShows();
-}, []);
+   }, []);
 
 if (loading) return <div>Loading...</div>;
 

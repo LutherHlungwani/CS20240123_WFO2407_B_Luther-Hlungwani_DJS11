@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import { getFromLocalStorage, saveToLocalStorage, savetoLocalStorage} from '../utils/storage';
+import { getFromLocalStorage, saveToLocalStorage} from '../utils/storage';
 
 const Favorites = () => {
     const [ favorites, setFavorites] = useState([]);
