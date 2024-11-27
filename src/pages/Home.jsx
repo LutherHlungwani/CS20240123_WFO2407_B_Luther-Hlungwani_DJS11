@@ -1,39 +1,57 @@
-import { useEffect } from "react";
-import { fetchShows} from '../utils/api'
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { fetchShows } from '../utils/api';
+import ShowList from '../components/ShowList';
+
 
 const Home = () => {
-    const [show, setShows] = useState([]);
+    const [shows, setShows] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [genreFilter, setGenreFilter] = useState(null);
+
+    
 
    useEffect(() => {
-    const getShows = async () => {
+    const loadShows = async () => {
         try {
-            const data = await fetchShows();
-
-            setShows(data.sort((a, b) => a.title.localeCompare(b.title)));
+            const response = await fetchPreviews();
+            const sortedShows = response.data.sort((a, b) => a.title.localeCompare(b.title));
+            setShows(sortedShows);
         } catch (error) {
-            console.error(error);
+            console.error('Error fetching shows:', error);
         } finally {
             setLoading(false);
         }
     };
-    getShows();
+    loadShows();
    }, []);
 
-if (loading) return <div>Loading...</div>;
+   const filteredShows = genreFilter
+   ? shows.filter((show) => show.genreIds.includes(genreFilter))
+   : shows;
+
+if (loading) return <div className="text-center mt-8">Loading...</div>;
 
 return (
 
-    <div className = "p-4">
-        <h1 className= "text-2xl font-bold">CodeCast</h1>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-        {shows.map(show => (
-            <ShowCard key={show.id} show={show} />
-        ))}
-        </div>
-    </div>
+   
+
+    <div>
+    <select onChange={(e) => setGenreFilter(Number(e.target.value))}>
+      <option value="">All Genres</option>
+      <option value="1">Personal Growth</option>
+      <option value="2">Investigative Journalism</option>
+      <option value="3">History</option>
+      <option value="4">Investigative Journalism</option>
+      <option value="5">Investigative Journalism</option>
+      <option value="6">Investigative Journalism</option>
+      <option value="7">Investigative Journalism</option>
+      <option value="8">Investigative Journalism</option>
+      <option value="9">Kids and Family</option>
+      
+    </select>
+    <ShowList shows={filteredShows} />
+  </div>
     );
-;}
+};
 
 export default Home;

@@ -3,12 +3,3 @@
 @tailwind utilities;
 
 
-body {
-  margin: 0;
-  font-family: "Roboto", sans-serif;
-}
-
-h1 {
-  padding: 16px;
-}
-
