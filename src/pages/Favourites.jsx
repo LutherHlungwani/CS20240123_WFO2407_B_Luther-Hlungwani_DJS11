@@ -6,8 +6,8 @@ const Favorites = () => {
     const [sortOption, setSortOption] = useState('title-asc');
 
     useEffect(() => {
-        const storedFavorites = getFromLocalStorage('favorites');
-        setFavorites(storedFavorites || []);
+        const storedFavorites =  JSON.parse(localStorage.getItem('favorites')) || [];
+        setFavorites(storedFavorites );
 
     },[]);
 

@@ -7,16 +7,14 @@ const Header = () => {
             <h1 className="text-xl font-bold"> 
                 CodeCast
             </h1>
-            <nav className="space-x-4">
+            <nav className="space-x-4 space-between">
                 <Link to="/" className="hover:underline">
                 Home
                 </Link>
                 <Link to="/favorites" className="hover:underline">
-                Home
+                Favorites
                 </Link>
-                <Link to="/show/:id" className="hover:underline">
-                Home
-                </Link>
+                
                 
             </nav>
         </header>

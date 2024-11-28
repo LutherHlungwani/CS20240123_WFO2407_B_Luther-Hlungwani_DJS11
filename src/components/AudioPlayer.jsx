@@ -6,6 +6,7 @@ const AudioPlayer = ({src}) => {
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  
 
   const togglePlay = () => {
   

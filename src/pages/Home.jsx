@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchShows } from '../utils/api';
+import { fetchPreviews } from '../utils/api';
 import ShowList from '../components/ShowList';
 
 
@@ -26,16 +26,17 @@ const Home = () => {
    }, []);
 
    const filteredShows = genreFilter
-   ? shows.filter((show) => show.genreIds.includes(genreFilter))
+   ? shows.filter((show) => show.genreIds && show.genreIds.includes(genreFilter))
    : shows;
-
+  
 if (loading) return <div className="text-center mt-8">Loading...</div>;
 
 return (
 
    
-
+    
     <div>
+        
     <select onChange={(e) => setGenreFilter(Number(e.target.value))}>
       <option value="">All Genres</option>
       <option value="1">Personal Growth</option>
