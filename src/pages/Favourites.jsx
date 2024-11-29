@@ -6,18 +6,22 @@ import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import { getFavorites, removeFavorite, saveToLocalStorage } from '../utils/storage';
 
-
-
+/** 
+  * Favorites page
+  *Displays the user's favorite podcast episodes and allows sorting and interaction
+   */
 
 const Favorites = () => {
+  //state for managing list of favorites and sorting option
     const [ favorites, setFavorites] = useState([]);
     const [sortOption, setSortOption] = useState('title-asc');
 
-   
+   //Fetch the favorites list from storage when the component mounts
   useEffect(() => {
     setFavorites(getFavorites());
   },[]);
     
+    //Sortin functions for different criteria
     const sortFuntions = {
       'title-asc': (a, b) => a.title.localeCompare(b.title),
       'title-asc': (a, b) => b.title.localeCompare(a.title),
@@ -25,8 +29,10 @@ const Favorites = () => {
       
     };
 
+    //Update sort option when user selects a new select a new sorting method
     const sortedFavorites= () => favorites.sort(sortFuntions[sortOption] || sortFuntions['title-asc']); 
     
+    //Play the selected episode by saving it to local storage
     const handleSortChange = (e) => {
       setSortOrder(e.target.value);
     };

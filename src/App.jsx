@@ -3,7 +3,7 @@ import  Home from './pages/Home';
 import Favorites from './pages/Favourites';
 import ShowDetail from './components/ShowDetail';
 import Header  from './components/Header';
-//import Footer from './components/Footer';
+
 import AudioPlayer from './components/AudioPlayer';
 
 
@@ -15,12 +15,16 @@ const App = () => {
     
       
         
-          
+        {/*Main container with flex column layout */}  
         <div className='min-h-screen flex flex-col'>
+          {/* Header component */}
       <Header />
+
+      {/*Main content area */}
       <div className='flex-grow pb-16'>
 
-        
+{/*Router setup with navigation */}
+
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/show/:id" element={<ShowDetail />} />
@@ -30,6 +34,7 @@ const App = () => {
       </div>
       
     </div>
+    {/*Audio player component fixed at the bottom  */}
     <AudioPlayer />
         
      

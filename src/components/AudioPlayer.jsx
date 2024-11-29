@@ -5,11 +5,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getFromLocalStorage } from "../utils/storage";
 
 
-const AudioPlayer = ({ children }) => {
+const AudioPlayer = ({ currentEpisode }) => {
+  // State to track if audio is playing 
   const [isPlaying, setIsPlaying] = useState(false);
+  // State to store current episode information
   const [currentEpisode, setCurrentEpisode]= useState(false);
+  //Ref for the audio element
   const audioRef = useRef(new Audio());
 
+  //Effect to load the current episode from local storage on component mount
   useEffect(() => {
     const storedEpisode = getFromLocalStorage('currentEpisode');
     if (storedEpisode) {
@@ -21,6 +25,7 @@ const AudioPlayer = ({ children }) => {
  
   },[]);
 
+  //Effect to check for episode changes every second
   useEffect(() => {
     const checkForEpisodeChanges = () => {
       const storedEpisode = getFromLocalStorage('currentEpisode');
@@ -33,11 +38,13 @@ const AudioPlayer = ({ children }) => {
       }
     };
     
+    //Cleanup interval on component uunmount
     const intervalId = setInterval(checkForEpisodeChanges, 1000);
 
     return() => clearInterval(intervalId);
   }, [currentEpisode, isPlaying]);
   
+  //Effect to add event listeners for play and pause events
   useEffect(() =>{
     const audio = audioRef.current;
     const handlePlay = () => setIsPlaying(true);
@@ -46,6 +53,7 @@ const AudioPlayer = ({ children }) => {
     audio.addEventListener('play', handlePlay);
     audio.addEventListener('pause', handlePause);
 
+    //Cleanup event listeners on component unmount
     return () => {
       audio.removeEventListener('play', handlePlay);
       audio.removeEventListener('pause', handlePause);
@@ -53,6 +61,7 @@ const AudioPlayer = ({ children }) => {
 
   },[]);
 
+  //Function to toggle play/pause
   const togglePlay = () => {
     if (audioRef.current.paused){
       audioRef.current.play();
@@ -64,6 +73,7 @@ const AudioPlayer = ({ children }) => {
 
   return (
     <div>
+      {/* fixed audio player at the bottom of the screen */}
        <div className="fixed bottom-0 left-0 w-full bg-gray-800 text-white p-4 flex items-center justify-between">
           <div>
             {currentEpisode ? (
@@ -76,7 +86,9 @@ const AudioPlayer = ({ children }) => {
           </div>
 
           <div className="flex items-center gap-4">
+            
             <button>
+              {/*Play/Pause button */}
               <FontAwesomeIcon icon={faBackward} className="text-white text-xl" />
             </button>
             <button onClick={togglePlay}>

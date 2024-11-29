@@ -2,14 +2,20 @@ import { useState, useEffect } from "react";
 import { fetchPreviews } from '../utils/api';
 import ShowList from '../components/ShowList';
 
+/**
+ * Home Component
+ * @returns list of podcast shows fetched from API, with options to filter by genre.
+ */
+
 
 const Home = () => {
+    //State to manage fetched shows, loading state, and genre filtering
     const [shows, setShows] = useState([]);
     const [loading, setLoading] = useState(true);
     const [genreFilter, setGenreFilter] = useState(null);
 
     
-
+    //Fetch show previews when the component mounts
    useEffect(() => {
     const loadShows = async () => {
         try {
@@ -25,6 +31,7 @@ const Home = () => {
     loadShows();
    }, []);
 
+   //Display loading state if shows are being fetched
    const filteredShows = genreFilter
    ? shows.filter((show) => show.genreIds && show.genreIds.includes(genreFilter))
    : shows;
