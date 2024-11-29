@@ -45,3 +45,7 @@ This is a React-based podcast application that allows users to browse, play, and
 - Implement a backend API for storing user data
 - Add search functionality
 - Improve accessibility features
+
+# Deployed via Netlify
+
+at https://codecaster5.netlify.app/

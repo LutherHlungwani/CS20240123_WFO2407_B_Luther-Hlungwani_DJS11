@@ -33,7 +33,7 @@ const AudioPlayer = ({ children }) => {
       }
     };
     
-    const intervalId = setInterval(checkForEpisodeChanges, 5);
+    const intervalId = setInterval(checkForEpisodeChanges, 1000);
 
     return() => clearInterval(intervalId);
   }, [currentEpisode, isPlaying]);
