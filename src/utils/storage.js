@@ -12,3 +12,25 @@
   export const clearLocalStorage = (key) => {
     localStorage.removeItem(key);
   };
+
+  export const getFavorites = () => {
+    return getFromLocalStorage('favourites') || [];
+  };
+
+  export const addFavorites = ( episode ) => {
+    const favorites = getFavorites();
+    const updatedFavorites = [...favorites, {...episode, addedAt: new Date().toISOString() }];
+    saveToLocalStorage('favorites', updatedFavorites);
+  };
+
+  export const removeFavorite = (episodeId) => {
+    const favorites = getFavorites();
+    const updatedFavorites = favorites.filter((fav) => fav.id !== episodeId);
+    saveToLocalStorage('favorites', updatedFavorites);
+  };
+
+  export const isFavorite = (episodeId) => {
+    const favorites = getFavorites();
+    return favorites.some((fav) => fav.id === episodeId);
+
+  };

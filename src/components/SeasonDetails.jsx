@@ -1,15 +1,17 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import FavoritesButton from "./FavoritesButton";
+import { saveToLocalStorage } from "../utils/storage";
 
 
 
+const SeasonDetail =  ({ season }) => {
+     const handlePlayEpisode = (episode) => {
+        saveToLocalStorage('currentEpisode', episode);
+     };
 
-const SeasonDetail =  ({season, urrentEpisode }) => {
-     
     
-
-     const handleEpisodeClick = async (episode) => {
-        setCurrentEpisode(episode.file)
-        
-    };
 
     return(
         <div className="bg-gray-100 p-4 rounded-md shadow-md">
@@ -17,14 +19,20 @@ const SeasonDetail =  ({season, urrentEpisode }) => {
             <p className="text-gray-500 text-sm">{season.episodes.length} Episodes</p>
             <ul className="mt-2 space-y-1">
                 {season.episodes.map((episode) => (
-                    <li key={episode.episode} 
-                    className="text-gray-700"
-                    onClick={() => handleEpisodeClick(episode)}
-                    
-                    >
-                        {episode.title}
+                    <div key={episode.episode} className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow">
+                       <div>
+                        <h3 className="font-semibold">{episode.title}</h3>
+                       </div>
+                       <div className="flex items-center space-x-4">
+                        <button onClick={() => handlePlayEpisode(episode)}
+                                className="text-blue-500 hover:text-blue-700"
+                                >
+                                    <FontAwesomeIcon icon={faPlay} size="lg" />
+                                </button>
+                                <FavoritesButton episode={episode} />
+                       </div>
                         
-                    </li>
+                    </div>
                 ))}
             </ul>
         </div>

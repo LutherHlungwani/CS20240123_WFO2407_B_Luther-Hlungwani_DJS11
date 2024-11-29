@@ -1,85 +1,105 @@
-import { useRef ,useState, useEffect} from "react";
+import { useRef, useState, useEffect} from "react";
 
-const AudioPlayer = ({src}) => {
+import { faPlay, faPause, faForward, faBackward} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getFromLocalStorage } from "../utils/storage";
+
+
+const AudioPlayer = ({ children }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(null);
-  const [progress, setProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  
-
-  const togglePlay = () => {
-  
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
-
-  const handleTimeUpdate = () => {
-    const audio = audioRef.current;
-    setCurrentTime(audio.currentTime);
-    setProgress((audio.currentTime / audio.duration) * 100);
-  };
-
-  const handleLoadedMetadata = () => {
-    const audio = audioRef.current;
-    setDuration(audio.duration);
-
-  };  
+  const [currentEpisode, setCurrentEpisode]= useState(false);
+  const audioRef = useRef(new Audio());
 
   useEffect(() => {
-    const audio = audioRef.current;
+    const storedEpisode = getFromLocalStorage('currentEpisode');
+    if (storedEpisode) {
+      setCurrentEpisode(storedEpisode);
+      audioRef.current.src= storedEpisode.file;
+      audioRef.current.load();
+    }
+   
+ 
+  },[]);
 
-    audio.addEventListener('timeupdate', handleTimeUpdate);
-    audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+  useEffect(() => {
+    const checkForEpisodeChanges = () => {
+      const storedEpisode = getFromLocalStorage('currentEpisode');
+      if (storedEpisode && (!currentEpisode || storedEpisode.file !== currentEpisode.file)) {
+        audioRef.current.src = storedEpisode.file;
+        audioRef.current.load();
+        if (isPlaying) {
+          audioRef.current.play();
+        }
+      }
+    };
+    
+    const intervalId = setInterval(checkForEpisodeChanges, 5);
+
+    return() => clearInterval(intervalId);
+  }, [currentEpisode, isPlaying]);
+  
+  useEffect(() =>{
+    const audio = audioRef.current;
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
 
     return () => {
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
     };
 
   },[]);
 
-
+  const togglePlay = () => {
+    if (audioRef.current.paused){
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
+    }
+  };
  
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-gray-800 text-white p-4 flex items-center justify-between">
-      <audio ref={audioRef} src={src} className="hidden" />
-      
-      <button
-        onClick={togglePlay}
-        className="px-4 py-2 bg-green-500 hover:bg-green-600 rounded"
-      >
-        {isPlaying ? 'Pause' : 'Play'}
-      </button>
+    <div>
+       <div className="fixed bottom-0 left-0 w-full bg-gray-800 text-white p-4 flex items-center justify-between">
+          <div>
+            {currentEpisode ? (
+              <div>
+                <strong>Now Playing </strong> {currentEpisode.title}
+              </div>
+            ) : (
+              "Select an episode to play"
+            )}
+          </div>
 
-      <div className="flex-1 mx-4">
-        <div className="w-full bg-gray-600 h-2 rounded overflow-hidden">
-          <div
-            className="bg-blue-500 h-full"
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
-      </div>
+          <div className="flex items-center gap-4">
+            <button>
+              <FontAwesomeIcon icon={faBackward} className="text-white text-xl" />
+            </button>
+            <button onClick={togglePlay}>
+              <FontAwesomeIcon
+                icon={isPlaying ? faPause : faPlay}
+                className="text-white text-xl"
+               />
+            </button>
 
-      <div className="flex items-center space-x-2">
-        <span>{formatTime(currentTime)}</span>
-        <span>/</span>
-        <span>{formatTime(duration)}</span>
+            <button>
+              <FontAwesomeIcon icon={faForward} className="text-white text-xl" />
+            </button>
+          </div>
+          <div className="pb-0">{children}</div>
       </div>
-    </div>
+     </div>
+   
   );
 };
+
+
   
-const formatTime = (seconds) => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = Math.floor(seconds % 60);
-  return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-};
+
 
 
 export default AudioPlayer;

@@ -34,7 +34,7 @@ const ShowList = ({shows}) => {
                 <div className="p-4 ">
                     <h3 className="text-lg font-semibold">{show.title}</h3>
                     <p className="text-gray-600 text-sm overflow-hidden ">Genre: {show.genreIds?.length > 0
-                                                                            ? show.genreIds.map((id) => GENRE_MAP[id]).join(', ')
+                                                                            ? show.genre.map((id) => GENRE_MAP[id]).join(', ')
                                                                             : 'Unknown'}
                                                                             </p>
                     <p className='text-light-gray-600 text-sm'>  Last Updated: {new Date(show.updated).toLocaleDateString()}</p>

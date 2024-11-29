@@ -6,13 +6,19 @@ import Header  from './components/Header';
 //import Footer from './components/Footer';
 import AudioPlayer from './components/AudioPlayer';
 
+
+
 const App = () => {
 
   return (
     <>
-    <div className='min-h-screen flex flex-col'>
+    
+      
+        
+          
+        <div className='min-h-screen flex flex-col'>
       <Header />
-      <div className='flex-grow'>
+      <div className='flex-grow pb-16'>
 
         
             <Routes>
@@ -22,8 +28,13 @@ const App = () => {
             </Routes>        
         
       </div>
-      <AudioPlayer />
+      
     </div>
+    <AudioPlayer />
+        
+     
+    
+    
 
     </>
   );
