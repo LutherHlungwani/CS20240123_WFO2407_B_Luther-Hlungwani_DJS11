@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-
+import {faPlay} from '@fontawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
@@ -10,6 +10,19 @@ import { getFavorites, removeFavorite, saveToLocalStorage } from '../utils/stora
   * Favorites page
   *Displays the user's favorite podcast episodes and allows sorting and interaction
    */
+
+
+const GENRE_MAP = {
+  1:'Personal Growth',
+  2:'Investigative Journalism',
+  3:'History',
+  4:'Comedy',
+  5:'Entertainment',
+  6:'Business',
+  7:'Business',
+  8:'News',
+  9:'Kids and Family',
+};
 
 const Favorites = () => {
   //state for managing list of favorites and sorting option
@@ -39,6 +52,11 @@ const Favorites = () => {
 
     const handlePlayEpisode = (episode) => {
       saveToLocalStorage('currentEpisode', episode);
+    };
+
+    const getGenres = (genreIds) => {
+      if (!genreIds || genreIds.length === 0) return 'unkwown';
+      return genreIds.map(id => GENRE_MAP[id] || 'Unknown').join(' ,');
     };
 
     
@@ -72,16 +90,17 @@ const Favorites = () => {
               >
                 <div>
                   <h3 className="font-semibold">{episode.title}</h3>
-                  <p className="text-sm text-gray-500">{new Date(episode.addedAt).toLocaleString()}</p>
+                  <p className="text-sm text-gray-500">Genres: {getGenres(episode.genreIds)}</p>
+                  <p className="text-sm text-gray-500">Added: {new Date(episode.addedAt).toLocaleString()}</p>
                 </div>
                 <div className="flex items-center space-x-4">
                   <button
-                  onClick={() => handlePlayEpisode(episode.episode)}
+                  onClick={() => handlePlayEpisode(episode)}
                   className="text-blue-500 hover:text-blue-700"
                   >
-                    <FontAwesomeIcon icon={regularStar} />
+                    <FontAwesomeIcon icon={faPlay} />
                   </button>
-                  <FavoritesButton />
+                  <FavoritesButton episode={episode}/>
                 </div>
               </div>
             ))}

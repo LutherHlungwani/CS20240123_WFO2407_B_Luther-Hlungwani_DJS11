@@ -23,13 +23,13 @@
     saveToLocalStorage('favorites', updatedFavorites);
   };
 
-  export const removeFavorite = (episodeId) => {
+  export const removeFavorite = (episodeNumber) => {
     const favorites = getFavorites();
     const updatedFavorites = favorites.filter((fav) => fav.id !== episodeId);
     saveToLocalStorage('favorites', updatedFavorites);
   };
 
-  export const isFavorite = (episodeId) => {
+  export const isFavorite = (episodeNumber) => {
     const favorites = getFavorites();
     return favorites.some((fav) => fav.id === episodeId);
 

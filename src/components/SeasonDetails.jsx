@@ -9,6 +9,7 @@ import { saveToLocalStorage } from "../utils/storage";
 const SeasonDetail =  ({ season }) => {
      const handlePlayEpisode = (episode) => {
         saveToLocalStorage('currentEpisode', episode);
+        saveToLocalStorage('currentSeason', season);
      };
 
     
