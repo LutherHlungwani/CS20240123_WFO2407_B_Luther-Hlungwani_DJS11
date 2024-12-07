@@ -1,41 +1,37 @@
 import { useRef, useState, useEffect} from "react";
-
 import { faPlay, faPause, faForward, faBackward} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getFromLocalStorage, saveToLocalStorage } from "../utils/storage";
+import { getFromLocalStorage } from "../utils/storage";
 
 
-const AudioPlayer = ({ currentEpisode }) => {
+const AudioPlayer = ({ children }) => {
   // State to track if audio is playing 
   const [isPlaying, setIsPlaying] = useState(false);
   // State to store current episode information
   const [currentEpisode, setCurrentEpisode]= useState(false);
-  const [currentSeason, setCurrentSeason]= useState(null);
   //Ref for the audio element
   const audioRef = useRef(new Audio());
+  // State to track progress
+  const [progress, setProgress] = useState(0);
 
   //Effect to load the current episode from local storage on component mount
   useEffect(() => {
     const storedEpisode = getFromLocalStorage('currentEpisode');
-    const storedSeason = getFromLocalStorage('currentSeason');
     if (storedEpisode) {
       setCurrentEpisode(storedEpisode);
-      setCurrentSeason(storedSeason);
       audioRef.current.src= storedEpisode.file;
       audioRef.current.load();
     }
    
  
-  },[]);
+  }, []);
 
   //Effect to check for episode changes every second
   useEffect(() => {
     const handleStorageChange = () => {
       const newEpisode = getFromLocalStorage('currentEpisode');
-      const newSeason = getFromLocalStorage('currentSeason');
       if (newEpisode && (!currentEpisode || newEpisode.file !== currentEpisode.file)) {
         setCurrentEpisode(newEpisode);
-        setCurrentSeason(newSeason);
         audioRef.current.src = newEpisode.file;
         audioRef.current.load();
         if (isPlaying) {
@@ -69,6 +65,34 @@ const AudioPlayer = ({ currentEpisode }) => {
 
   },[]);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+    const handleTimeUpdate = () => {
+      setProgress((audio.currentTime / audio.duration) * 100);
+    };
+
+    audio.addEventListener('timeUpdated', handleTimeUpdate);
+
+    return () => {
+      audio.removeEventListener('timeUpdate', handleTimeUpdate);
+    };
+  }, [])
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isPlaying) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isPlaying]);
+
   //Function to toggle play/pause
   const togglePlay = () => {
     if (audioRef.current.paused){
@@ -78,31 +102,6 @@ const AudioPlayer = ({ currentEpisode }) => {
     }
   };
 
-  const playNextEpisode = () => {
-    if (currentSeason && currentEpisode) {
-      const currentIndex = currentSeason.episodes.findIndex(ep => ep.episode === currentEpisode.episode);
-      if (currentIndex < currentSeason.episode.length - 1) {
-        saveToLocalStorage('currentEpisode', nextEpisode);
-        setCurrentEpisode(nextEpisode);
-        audioRef.current.src = nextEpisode.file;
-        audioRef.current.load();
-        audioRef.current.play();
-      }
-    }
-  };
- 
-  const playPreviousEpisode = () => {
-    if (currentSeason && currentEpisode) {
-      const currentIndex = currentSeason.episodes.findIndex(ep => ep.episode === currentEpisode.episode);
-      if (currentIndex > 0) {
-        const previousEpisode = currentSeason.episodes[currentIndex - 1];
-        saveToLocalStorage('currentEpisode', previousEpisode);
-        audioRef.current.src = previousEpisode.file;
-        audioRef.current.load();
-        audio.current.play();
-      }
-    }
-  };
 
   return (
     <div>
@@ -120,7 +119,7 @@ const AudioPlayer = ({ currentEpisode }) => {
 
           <div className="flex items-center gap-4">
             
-            <button onClick={playPreviousEpisode} disabled={!currentEpisode}>
+            <button>
               {/*Play/Pause button */}
               <FontAwesomeIcon icon={faBackward} className="text-white text-xl" />
             </button>
@@ -131,9 +130,12 @@ const AudioPlayer = ({ currentEpisode }) => {
                />
             </button>
 
-            <button onClick={playNextEpisode}>
+            <button >
               <FontAwesomeIcon icon={faForward} className="text-white text-xl" />
             </button>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+            <div className="bg-blue-600 h-2.5 rounded-full" style={{width: `${progress}%`}}></div>
           </div>
           <div className="pb-0">{children}</div>
       </div>

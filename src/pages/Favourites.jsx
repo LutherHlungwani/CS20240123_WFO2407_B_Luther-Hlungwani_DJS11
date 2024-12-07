@@ -11,7 +11,7 @@ import { getFavorites, removeFavorite, saveToLocalStorage } from '../utils/stora
   *Displays the user's favorite podcast episodes and allows sorting and interaction
    */
 
-
+// Map of genre IDs to genre names
 const GENRE_MAP = {
   1:'Personal Growth',
   2:'Investigative Journalism',
@@ -43,7 +43,7 @@ const Favorites = () => {
     };
 
     //Update sort option when user selects a new select a new sorting method
-    const sortedFavorites= () => favorites.sort(sortFuntions[sortOption] || sortFuntions['title-asc']); 
+    const sortedFavorites = () => favorites.sort(sortFuntions[sortOption] || sortFuntions['title-asc']); 
     
     //Play the selected episode by saving it to local storage
     const handleSortChange = (e) => {
@@ -56,7 +56,7 @@ const Favorites = () => {
 
     const getGenres = (genreIds) => {
       if (!genreIds || genreIds.length === 0) return 'unkwown';
-      return genreIds.map(id => GENRE_MAP[id] || 'Unknown').join(' ,');
+      return genreIds.map(id => GENRE_MAP[id] || 'Unknown').join(', ');
     };
 
     
