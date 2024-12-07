@@ -5,24 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 import { getFavorites, removeFavorite, saveToLocalStorage } from '../utils/storage';
+import { GENRE_MAP } from '../components/ShowList';
 
 /** 
   * Favorites page
   *Displays the user's favorite podcast episodes and allows sorting and interaction
    */
 
-// Map of genre IDs to genre names
-const GENRE_MAP = {
-  1:'Personal Growth',
-  2:'Investigative Journalism',
-  3:'History',
-  4:'Comedy',
-  5:'Entertainment',
-  6:'Business',
-  7:'Business',
-  8:'News',
-  9:'Kids and Family',
-};
+
 
 const Favorites = () => {
   //state for managing list of favorites and sorting option
@@ -100,7 +90,7 @@ const Favorites = () => {
                   >
                     <FontAwesomeIcon icon={faPlay} />
                   </button>
-                  <FavoritesButton episode={episode}/>
+                  <FavoritesButton />
                 </div>
               </div>
             ))}

@@ -15,7 +15,7 @@ const FavoritesButton = ({ episode }) => {
 // toggle favourite status
     const toggleFavorite = () => {
         if (isFav){
-         removeFavorite(episode);   
+         removeFavorite(episode.episode);   
         } else {
             addFavorites(episode);
         }
@@ -23,7 +23,12 @@ const FavoritesButton = ({ episode }) => {
     };
 
     return (
-        <button onClick={toggleFavorite} className={`text-yellow-400 hover:text-yellow-500 ${isFav ? 'opacity-100' : 'opacity-50'}`} aria-label={isFav ? `Remove ${episode.title} from favorites` : `Add ${episode.title} to favorites`}>
+        <button 
+            onClick={toggleFavorite} 
+            className={`text-yellow-400 hover:text-yellow-500 ${isFav ? 'opacity-100' : 'opacity-50'}`} 
+            aria-label={isFav ? `Remove ${episode.title} from favorites` : `Add ${episode.title} to favorites`}
+        >
+
             {/* Display solid star if favorite, otherwise regular star */}
             <FontAwesomeIcon icon={isFav ? solidStar : regularStar} />
         </button>

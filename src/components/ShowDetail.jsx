@@ -12,6 +12,8 @@ const ShowDetail = () => {
     const [show, setShow] = useState(null);
     //State to track loading status
     const [loading, setLoading] = useState(true);
+    // Add state for the current season
+    const [currentSeason, setCurrentSeason] = useState(1);
     
     //Effect to fetch show details when component mounts or id changes
     useEffect(() => {
@@ -43,16 +45,31 @@ const ShowDetail = () => {
             <h2 className="text-2xl p-4 pl-0 font-semibold">{show.title}</h2>
             {/* Show description */}
             <p>{show.description}</p>
-            {/* Container for seasons */}
+
+            <div>
+                <label htmlFor="season-select" className="mr-2">Season:</label>
+                <select
+                 id="season-select"
+                 value={currentSeason}
+                 onChange={(e)=> setCurrentSeason(Number(e.target.value))}
+                 className="border p-2 rounded"
+                 >
+                    {show.seasons.map((season) => (
+                        <option key={season.season} value={season.season}>
+                            {season.title}
+                        </option>
+                    ))}
+                 </select>
+            </div>
+              {/* Container for seasons */}
             <div className="mt-4 space-y-4">
-                {/* Map through seasons and render SeasonDetail component for each */}
-                {show.seasons.map((season) => (
+                
+                
                     <SeasonDetail 
                     key={season.season} 
-                    season={season}
+                    season={show.seasons.find(s => s.season === currentSeason)}
                     
                     />
-                ))}
             </div>
 
             

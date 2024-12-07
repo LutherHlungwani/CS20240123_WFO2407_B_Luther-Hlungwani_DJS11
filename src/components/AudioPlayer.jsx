@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getFromLocalStorage } from "../utils/storage";
 
 
-const AudioPlayer = ({ children }) => {
+const AudioPlayer = ({ currentEpisode }) => {
   // State to track if audio is playing 
   const [isPlaying, setIsPlaying] = useState(false);
   // State to store current episode information

@@ -9,15 +9,25 @@ import { saveToLocalStorage } from "../utils/storage";
 const SeasonDetail =  ({ season }) => {
      const handlePlayEpisode = (episode) => {
         saveToLocalStorage('currentEpisode', episode);
-        saveToLocalStorage('currentSeason', season);
      };
 
     
 
     return(
         <div className="bg-gray-100 p-4 rounded-md shadow-md">
-            <h3 className="text-lg font-semibold">{season.title}</h3>
-            <p className="text-gray-500 text-sm">{season.episodes.length} Episodes</p>
+            <div className=" flex items-center mb-4">
+                <Image
+                    src={season.image}
+                    alt={`${season.title} cover`}
+                    width={100}
+                    height={100}
+                    className="rounded-md mr-4"
+                />
+              <div>  
+                <h3 className="text-lg font-semibold">{season.title}</h3>
+                <p className="text-gray-500 text-sm">{season.episodes.length} Episodes</p>
+              </div>
+            </div>
             <ul className="mt-2 space-y-1">
                 {season.episodes.map((episode) => (
                     <div key={episode.episode} className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow">
