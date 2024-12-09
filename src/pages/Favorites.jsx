@@ -9,7 +9,16 @@ const Favorites = () => {
   const [sortOption, setSortOption] = useState('title-asc');
 
   useEffect(() => {
+    const loadFavorites = () => {
     setFavorites(getFavorites());
+    };
+
+    loadFavorites();
+    window.addEventListener('favoritesChanged', loadFavorites);
+    
+    return () => {
+      window.removeEventListener('favoritesChanged', loadFavorites);
+    };
   }, []);
   
   const sortFunctions = {

@@ -15,7 +15,7 @@ const FavoritesButton = ({ episode }) => {
 // toggle favourite status
     const toggleFavorite = () => {
         if (isFav){
-         removeFavorite(episode.episode);   
+            removeFavorite(episode.episode);   
         } else {
             addFavorites(episode);
         }
