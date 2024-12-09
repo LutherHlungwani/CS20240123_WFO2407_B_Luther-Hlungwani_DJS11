@@ -19,9 +19,7 @@ const SeasonDetail =  ({ season }) => {
                 <Image
                     src={season.image}
                     alt={`${season.title} cover`}
-                    width={100}
-                    height={100}
-                    className="rounded-md mr-4"
+                    className="w-24 h-24 object-cover rounded-md mr-4"
                 />
               <div>  
                 <h3 className="text-lg font-semibold">{season.title}</h3>

@@ -19,7 +19,9 @@ const FavoritesButton = ({ episode }) => {
         } else {
             addFavorites(episode);
         }
-        setIsFav(!isFav);
+        setIsFav(!isFav); 
+        // Dispatch an event to notify that favorites have changed
+        window.dispatchEvent(new Event('favoritesChanged'));
     };
 
     return (

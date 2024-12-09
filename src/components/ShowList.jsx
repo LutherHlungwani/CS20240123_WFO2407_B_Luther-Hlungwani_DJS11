@@ -1,19 +1,6 @@
 import {Link} from 'react-router-dom';
+import { GENRE_MAP } from '../utils/constants';
 
-//Map of genre IDs to genre names
-// This allows for easy translation of genre IDs to human-readable names
-
-export const GENRE_MAP = {
-    1: 'Personal Growth',
-    2: 'Investigative Journalism',
-    3: 'History',
-    4: 'Comedy',
-    5: 'Entertainment',
-    6: 'Business',
-    7: 'Fiction',
-    8: 'News',
-    9: 'Kids and Family',
-  };
 
   //ShowList components that displays a grid of show previews
 const ShowList = ({shows}) => {
@@ -44,6 +31,11 @@ const ShowList = ({shows}) => {
                                                                             ? show.genre.map((id) => GENRE_MAP[id]).join(', ')
                                                                             : 'Unknown'}
                                                                             </p>
+                    
+                    {/* Number of Seasons */}
+                    <p className="text-sm text-gray-600">
+                        Seasons:{show.seasons}
+                    </p>
                     {/* Last Updated date */}
                     <p className='text-light-gray-600 text-sm'>  Last Updated: {new Date(show.updated).toLocaleDateString()}</p>
                     {/* Link to show Details */}

@@ -1,47 +1,29 @@
 import { Routes, Route } from 'react-router-dom';
-import  Home from './pages/Home';
-import Favorites from './pages/Favourites';
+import Home from './pages/Home';
+import Favorites from './pages/Favorites';
 import ShowDetail from './components/ShowDetail';
-import Header  from './components/Header';
-
+import Header from './components/Header';
 import AudioPlayer from './components/AudioPlayer';
-
-
+import SearchResults from './pages/SearchResults';
 
 const App = () => {
-
   return (
-    <>
-    
-      
-        
-        {/*Main container with flex column layout */}  
-        <div className='min-h-screen flex flex-col'>
-          {/* Header component */}
+    <div className='min-h-screen flex flex-col'>
+      {/* Header component */}
       <Header />
-
-      {/*Main content area */}
-      <div className='flex-grow pb-16'>
-
-{/*Router setup with navigation */}
-
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/show/:id" element={<ShowDetail />} />
-              <Route path="/favorites" element={<Favorites />} />
-            </Routes>        
-        
-      </div>
-      
+      {/* Main content data */}
+      <main className='flex-grow pb-16'>
+        {/* Route configuration */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/show/:id" element={<ShowDetail />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/search" element={<SearchResults />} />
+        </Routes>
+      </main>
+      {/* Audio player component */}
+      <AudioPlayer />
     </div>
-    {/*Audio player component fixed at the bottom  */}
-    <AudioPlayer />
-        
-     
-    
-    
-
-    </>
   );
 };
 
