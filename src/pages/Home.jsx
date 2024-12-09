@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { fetchPreviews } from '../utils/api';
 import ShowList from '../components/ShowList';
-import { GENRE_MAP } from "../components/ShowList";
+import { GENRE_MAP } from "../utils/constants"
+<uti></uti>;
 
 /**
  * Home Component

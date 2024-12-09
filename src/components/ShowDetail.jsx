@@ -66,7 +66,7 @@ const ShowDetail = () => {
                 
                 
                     <SeasonDetail 
-                    key={season.season} 
+                    
                     season={show.seasons.find(s => s.season === currentSeason)}
                     
                     />

@@ -34,7 +34,7 @@ const ShowList = ({shows}) => {
                     
                     {/* Number of Seasons */}
                     <p className="text-sm text-gray-600">
-                        Seasons:{show.seasons}
+                        Seasons: {show.seasons}
                     </p>
                     {/* Last Updated date */}
                     <p className='text-light-gray-600 text-sm'>  Last Updated: {new Date(show.updated).toLocaleDateString()}</p>

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getFromLocalStorage, saveToLocalStorage } from "../utils/storage";
 
 
-const AudioPlayer = ({ currentEpisode }) => {
+const AudioPlayer = () => {
   // State to track if audio is playing 
   const [isPlaying, setIsPlaying] = useState(false);
   // State to store current episode information
@@ -17,22 +17,36 @@ const AudioPlayer = ({ currentEpisode }) => {
 
   //Effect to load the current episode from local storage on component mount
   useEffect(() => {
-    const storedEpisode = getFromLocalStorage('currentEpisode');
-    if (storedEpisode) {
-      setCurrentEpisode(storedEpisode);
-      audioRef.current.src= storedEpisode.file;
+    const handleStorageChange = () => {
+      const storedEpisode = getFromLocalStorage('currentEpisode');
+      if (storedEpisode && (!currentEpisode || storedEpisode.episode !== currentEpisode.episode)) {
+        setCurrentEpisode(storedEpisode);
+        audioRef.current.src= storedEpisode.file;
+        audioRef.current.play().then(() => setIsPlaying(true)).catch(console.error);
       
-    }
-    const handleTimeUpdate = () => {
-      setProgress((audioRef.current.currentTime / audioRef.current.duration) * 100);
+      }
     };
 
-    audioRef.current.addEventListener('timeupdate', handleTimeUpdate);
+    window.addEventListener('storage', handleStorageChange);
+    handleStorageChange(); // Check on mount
 
     return () => {
-      audioRef.current.removeEventListener('timeupdate', handleTimeUpdate);
+      window.removeEventListener('storage', handleStorageChange);
     }
-  }, []);
+  }, [currentEpisode]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    const handleTimeUpdate = () => {
+        setProgress((audio.currentTime / audio.duration) * 100);
+    };
+
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+
+    return () => {
+        audio.removeEventListener('timeupdate', handleTimeUpdate);
+    };
+}, []);
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
@@ -63,39 +77,43 @@ const AudioPlayer = ({ currentEpisode }) => {
 
   return (
     
-    <div className="fixed bottom-0 left-0 w-full bg-gray-800 text-white p-4">
-      {/* fixed audio player at the bottom of the screen */}
-            <div className="flex items-center justify-between">
-                <div className="flex-1">
-                    {currentEpisode ? (
-                        <p className="truncate">{currentEpisode.title}</p>
-                    ) : (
-                        <p>Select an episode to play</p>
-                    )}
-                </div>
-                <div className="flex items-center space-x-4">
-                    <button >
-                        <FontAwesomeIcon icon={faBackward} />
-                    </button>
-                    <button onClick={togglePlay}>
-                        <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
-                    </button>
-                    <button >
-                        <FontAwesomeIcon icon={faForward} />
-                    </button>
-                </div>
+   
+     
+     <div className="fixed bottom-0 left-0 w-full bg-gray-800 text-white p-4 flex items-center justify-between">
+        {/* Fixed audio player at the bottom of the screen */}
+        <div className="flex items-center justify-between">
+          {currentEpisode ? (
+            <div className="flex-1">
+              <strong>Now Playing: </strong> {currentEpisode.title}
             </div>
-            <div className="mt-2 bg-gray-600 rounded-full h-1">
-                <div 
-                    className="bg-blue-500 h-1 rounded-full" 
-                    style={{ width: `${progress}%` }}
-                ></div>
-            </div>
+          ) : (
+            "Select an episode to play"
+          )}
         </div>
-    );
+
+        <div className="flex items-center space-x-8">
+          <button>
+            <FontAwesomeIcon icon={faBackward} className="text-white text-xl" />
+          </button>
+          {/* Play/Pause button */}
+          <button onClick={togglePlay}>
+            <FontAwesomeIcon
+              icon={isPlaying ? faPause : faPlay}
+              className="text-white text-xl"
+            />
+          </button>
+          <button>
+            <FontAwesomeIcon icon={faForward} className="text-white text-xl" />
+          </button>
+        </div>
+        <div className="w-full bg-gray-300 rounded-full h-2.5 dark:bg-gray-700">
+          <div className="bg-blue-600 h-2.5 rounded-full" style={{width: `${progress}%`}}></div>
+        </div>
+        
+      </div>
+    
+  );
 };
-
-
   
 
 

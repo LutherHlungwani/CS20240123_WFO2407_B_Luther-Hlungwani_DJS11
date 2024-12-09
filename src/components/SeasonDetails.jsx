@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import FavoritesButton from "./FavoritesButton";
 import { saveToLocalStorage } from "../utils/storage";
 
-
-
 const SeasonDetail =  ({ season }) => {
+    if (!season) return null;
+
+    
      const handlePlayEpisode = (episode) => {
         saveToLocalStorage('currentEpisode', episode);
      };
@@ -16,7 +16,7 @@ const SeasonDetail =  ({ season }) => {
     return(
         <div className="bg-gray-100 p-4 rounded-md shadow-md">
             <div className=" flex items-center mb-4">
-                <Image
+                <img
                     src={season.image}
                     alt={`${season.title} cover`}
                     className="w-24 h-24 object-cover rounded-md mr-4"
@@ -35,6 +35,7 @@ const SeasonDetail =  ({ season }) => {
                        <div className="flex items-center space-x-4">
                         <button onClick={() => handlePlayEpisode(episode)}
                                 className="text-blue-500 hover:text-blue-700"
+                                aria-label={`Play ${episode.title}`}
                                 >
                                     <FontAwesomeIcon icon={faPlay} size="lg" />
                                 </button>

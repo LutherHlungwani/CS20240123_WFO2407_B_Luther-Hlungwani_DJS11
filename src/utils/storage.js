@@ -25,12 +25,12 @@
 
   export const removeFavorite = (episodeNumber) => {
     const favorites = getFavorites();
-    const updatedFavorites = favorites.filter((fav) => fav.id !== episodeId);
+    const updatedFavorites = favorites.filter((fav) => fav.episode !== episodeNumber);
     saveToLocalStorage('favorites', updatedFavorites);
   };
 
   export const isFavorite = (episodeNumber) => {
     const favorites = getFavorites();
-    return favorites.some((fav) => fav.id === episodeId);
+    return favorites.some((fav) => fav.episode === episodeNumber);
 
   };
