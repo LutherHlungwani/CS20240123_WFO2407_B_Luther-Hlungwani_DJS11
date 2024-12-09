@@ -76,42 +76,34 @@ const AudioPlayer = () => {
 
 
   return (
-    
-   
-     
-     <div className="fixed bottom-0 left-0 w-full bg-gray-800 text-white p-4 flex items-center justify-between">
-        {/* Fixed audio player at the bottom of the screen */}
-        <div className="flex items-center justify-between">
-          {currentEpisode ? (
-            <div className="flex-1">
-              <strong>Now Playing: </strong> {currentEpisode.title}
+    <div className="fixed bottom-0 left-0 w-full bg-gray-800 text-white p-4">
+            <div className="flex flex-col items-center">
+                <div className="mb-4 text-center">
+                    {currentEpisode ? (
+                        <p className="truncate max-w-md">{currentEpisode.title}</p>
+                    ) : (
+                        <p>Select an episode to play</p>
+                    )}
+                </div>
+                <div className="flex items-center justify-center space-x-4 mb-4">
+                    <button onClick={() => {/* Implement previous track logic */}} className="text-2xl">
+                        <FontAwesomeIcon icon={faBackward} />
+                    </button>
+                    <button onClick={togglePlay} className="text-3xl">
+                        <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+                    </button>
+                    <button onClick={() => {/* Implement next track logic */}} className="text-2xl">
+                        <FontAwesomeIcon icon={faForward} />
+                    </button>
+                </div>
+                <div className="w-full max-w-md bg-gray-600 rounded-full h-1">
+                    <div 
+                        className="bg-blue-500 h-1 rounded-full" 
+                        style={{ width: `${progress}%` }}
+                    ></div>
+                </div>
             </div>
-          ) : (
-            "Select an episode to play"
-          )}
         </div>
-
-        <div className="flex items-center space-x-8">
-          <button>
-            <FontAwesomeIcon icon={faBackward} className="text-white text-xl" />
-          </button>
-          {/* Play/Pause button */}
-          <button onClick={togglePlay}>
-            <FontAwesomeIcon
-              icon={isPlaying ? faPause : faPlay}
-              className="text-white text-xl"
-            />
-          </button>
-          <button>
-            <FontAwesomeIcon icon={faForward} className="text-white text-xl" />
-          </button>
-        </div>
-        <div className="w-full bg-gray-300 rounded-full h-2.5 dark:bg-gray-700">
-          <div className="bg-blue-600 h-2.5 rounded-full" style={{width: `${progress}%`}}></div>
-        </div>
-        
-      </div>
-    
   );
 };
   

@@ -38,7 +38,7 @@ const Home = () => {
 
    //Display loading state if shows are being fetched
    const filteredShows = genreFilter
-   ? shows.filter((show) => show.genreIds && show.genreIds.includes(genreFilter))
+   ? shows.filter((show) => show.genres && show.genres.includes(genreFilter))
    : shows;
 
    const sortedShows = [...filteredShows].sort((a, b) => {

@@ -27,8 +27,8 @@ const ShowList = ({shows}) => {
                     {/* Show title */}
                     <h3 className="text-lg font-semibold">{show.title}</h3>
                     {/* Show genres */}
-                    <p className="text-gray-600 text-sm overflow-hidden ">Genre: {show.genreIds?.length > 0
-                                                                            ? show.genre.map((id) => GENRE_MAP[id]).join(', ')
+                    <p className="text-gray-600 text-sm overflow-hidden ">Genre: {show.genres?.length > 0
+                                                                            ? show.genres.map((id) => GENRE_MAP[id]).join(', ')
                                                                             : 'Unknown'}
                                                                             </p>
                     

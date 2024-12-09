@@ -14,7 +14,7 @@
   };
 
   export const getFavorites = () => {
-    return getFromLocalStorage('favourites') || [];
+    return getFromLocalStorage('favorites') || [];
   };
 
   export const addFavorites = ( episode ) => {
