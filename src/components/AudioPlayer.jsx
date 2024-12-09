@@ -78,24 +78,25 @@ const AudioPlayer = () => {
   return (
     <div className="fixed bottom-0 left-0 w-full bg-gray-800 text-white p-4">
             <div className="flex flex-col items-center">
-                <div className="mb-4 text-center">
+                <div className="flex-1 mr-1">
                     {currentEpisode ? (
-                        <p className="truncate max-w-md">{currentEpisode.title}</p>
+                        <p className="truncate text-sm">{currentEpisode.title}</p>
                     ) : (
                         <p>Select an episode to play</p>
                     )}
                 </div>
                 <div className="flex items-center justify-center space-x-4 mb-4">
-                    <button onClick={() => {/* Implement previous track logic */}} className="text-2xl">
+                    <button  className="text-2xl">
                         <FontAwesomeIcon icon={faBackward} />
                     </button>
                     <button onClick={togglePlay} className="text-3xl">
                         <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
                     </button>
-                    <button onClick={() => {/* Implement next track logic */}} className="text-2xl">
+                    <button  className="text-2xl">
                         <FontAwesomeIcon icon={faForward} />
                     </button>
                 </div>
+                
                 <div className="w-full max-w-md bg-gray-600 rounded-full h-1">
                     <div 
                         className="bg-blue-500 h-1 rounded-full" 
